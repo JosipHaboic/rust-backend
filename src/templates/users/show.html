@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block header %}
+<h1>Users</h1>
+{% endblock header %}
+
+{% block content %}
+<div>
+	<table>
+		<tr>
+			<th>#</th>
+			<th>id</th>
+			<th>username</th>
+			<th>password</th>
+		</tr>
+		{% for user in users %}
+		{% if loop.index is odd %}
+		<tr class="tr-light-bkg">
+		{% else %}
+		<tr class="tr-dark-bkg">
+		{% endif %}
+			<td>{{loop.index}}</td>
+			<td>{{user.id}}</td>
+			<td>{{user.username}}</td>
+			<td>{{user.password}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock content %}
