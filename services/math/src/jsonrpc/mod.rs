@@ -12,15 +12,15 @@ pub async fn add(Params(params): Params<TwoNumbers>) -> Result<f32, Error> {
 }
 
 pub async fn sub(Params(params): Params<(f32, f32)>) -> Result<f32, Error> {
-    Ok(params.a - params.b)
+    Ok(params.0 - params.1)
 }
 
 pub async fn mul(Params(params): Params<(f32, f32)>) -> Result<f32, Error> {
-    Ok(params.a * params.b)
+    Ok(params.0 * params.1)
 }
 
 pub async fn div(Params(params): Params<(f32, f32)>) -> Result<f32, Error> {
-    Ok(params.a / params.b)
+    Ok(params.0 / params.1)
 }
 
 pub async fn timestamp() -> Result<String, Error> {
