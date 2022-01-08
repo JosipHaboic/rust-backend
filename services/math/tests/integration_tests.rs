@@ -68,4 +68,68 @@ mod test {
 		println!("{}", service_data["result"]);
 		assert_eq!(service_data["result"].as_f64().unwrap(), 5.0_f64);
 	}
+
+	#[actix_rt::test]
+	async fn test_mul() {
+
+		let mut app = test::init_service(
+			App::new().configure(config)
+		).await;
+
+		let request_params = serde_json::json!({
+    		"jsonrpc": "2.0",
+    		"method": "mul",
+    		"params": [3.0_f64, 2.0_f64],
+    		"id": "0"
+		});
+
+		let request = test::TestRequest::post()
+			.uri("/api")
+			.set_json(&request_params)
+			.to_request();
+
+		let response = test::call_service(&mut app, request).await;
+
+		assert!(response.status().is_success());
+
+		let service_data: Value = test::read_body_json(response).await;
+
+		assert_eq!(service_data["error"], Value::Null);
+		assert_eq!(service_data["id"], Value::String("0".to_string()));
+
+		println!("{}", service_data["result"]);
+		assert_eq!(service_data["result"].as_f64().unwrap(), 6.0_f64);
+	}
+
+	#[actix_rt::test]
+	async fn test_div() {
+
+		let mut app = test::init_service(
+			App::new().configure(config)
+		).await;
+
+		let request_params = serde_json::json!({
+    		"jsonrpc": "2.0",
+    		"method": "div",
+    		"params": [6.0_f64, 2.0_f64],
+    		"id": "0"
+		});
+
+		let request = test::TestRequest::post()
+			.uri("/api")
+			.set_json(&request_params)
+			.to_request();
+
+		let response = test::call_service(&mut app, request).await;
+
+		assert!(response.status().is_success());
+
+		let service_data: Value = test::read_body_json(response).await;
+
+		assert_eq!(service_data["error"], Value::Null);
+		assert_eq!(service_data["id"], Value::String("0".to_string()));
+
+		println!("{}", service_data["result"]);
+		assert_eq!(service_data["result"].as_f64().unwrap(), 3.0_f64);
+	}
 }
