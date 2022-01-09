@@ -315,9 +315,9 @@ dependencies = [
 
 [[package]]
 name = "actix-web"
-version = "3.3.2"
+version = "3.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e641d4a172e7faa0862241a20ff4f1f5ab0ab7c279f00c2d4587b77483477b86"
+checksum = "b6534a126df581caf443ba2751cab42092c89b3f1d06a9d829b1e17edfe3e277"
 dependencies = [
  "actix-codec",
  "actix-http",
@@ -634,6 +634,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "065374052e7df7ee4047b1160cca5e1467a12351a40b3da123c870ba0b8eda2a"
 
 [[package]]
+name = "auth_service"
+version = "0.1.0"
+dependencies = [
+ "actix-rt 2.4.0",
+ "actix-test",
+ "actix-web",
+ "chrono",
+ "jsonwebtoken",
+ "serde",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
 name = "autocfg"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -675,6 +689,7 @@ dependencies = [
  "actix-session",
  "actix-test",
  "actix-web",
+ "auth_service",
  "futures",
  "futures-channel",
  "futures-util",
