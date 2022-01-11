@@ -69,6 +69,22 @@ impl AuthenticateMiddlewareFactory {
 		}
 	}
 }
+impl<S, B> Transform<S, ServiceRequest, Response = ServiceResponse<B>, Error = Error> + 'static {
+	type Error = Error;
+	type Future = Ready<Result<Self::Transform, Self::InitError>>;
+	type InitError = ();
+	type Response = ServiceResponse<B>;
+	type Transform = AuthenticationMiddleware<S>;
+
+	fn new_transform(&self, service: S) -> Self::Future {
+		ready(Ok(AuthenticationMiddleware {
+			auth_data: self
+				.auth_data
+				.clone(),
+			service:   Rc::new(service),
+		}))
+	}
+}
 
 
 // #[derive(Debug)]
