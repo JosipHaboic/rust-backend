@@ -8,12 +8,12 @@ pub(crate) async fn initialize_database(pool: &SqlitePool) {
 	unimplemented!()
 }
 
-pub(crate) async fn add_user(user: user::User) -> Result<(), errors::AddUserError> {
+pub(crate) async fn add_user() -> Result<(), ()> {
 	unimplemented!()
 }
-pub(crate) async fn remove_user(id: &str) -> Result<(), errors::RemoveUserError> {
+pub(crate) async fn find_user() -> Result<(), ()> {
 	unimplemented!()
 }
-pub(crate) async fn find_user(id: &str) -> Result<User, errors::FindUserError> {
+pub(crate) async fn remove_user() -> Result<(), ()> {
 	unimplemented!()
 }
