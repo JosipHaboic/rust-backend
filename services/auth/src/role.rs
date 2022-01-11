@@ -2,7 +2,7 @@
 
 
 #[derive(Clone)]
-pub enum Role {
+pub (crate) enum Role {
     Visitor,
     Editor,
     Moderator,

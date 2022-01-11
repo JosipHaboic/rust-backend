@@ -3,12 +3,12 @@ mod handlers;
 mod user;
 mod role;
 mod login;
-
+pub mod db;
 
 
 pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::resource("/users")
+        web::resource("/auth")
             .app_data(user::init_users)
             .route(
                 web::route()

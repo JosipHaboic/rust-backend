@@ -1,0 +1,27 @@
+# Scan this file for changes every x seconds
+refresh_rate: 120 seconds
+
+appenders:
+  stdout:
+    kind: file
+    path: "log/logs/stdout.log"
+    encoder:
+      pattern: "{d} - {m}{n}"
+
+  # jsonrpc:
+  #   kind: file
+  #   path: "log/logs/jsonrpc.log"
+  #   encoder:
+  #     pattern: "{d} - {m}{n}"
+
+root:
+  level: info
+  appenders:
+    - stdout
+
+# loggers:
+#   jsonrpc:
+#     level: trace
+#     appenders:
+#       - jsonrpc
+#     additive: false
