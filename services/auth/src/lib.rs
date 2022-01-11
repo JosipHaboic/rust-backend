@@ -1,6 +1,7 @@
 use actix_web::{guard, web, HttpResponse};
 pub mod db;
 mod handlers;
+mod middleware;
 mod role;
 mod user;
 
