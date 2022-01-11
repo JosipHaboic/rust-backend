@@ -2998,7 +2998,6 @@ dependencies = [
  "sqlx-rt",
  "stringprep",
  "thiserror",
- "tokio-stream",
  "url",
  "whoami",
 ]
@@ -3029,13 +3028,9 @@ version = "0.5.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8061cbaa91ee75041514f67a09398c65a64efed72c90151ecd47593bad53da99"
 dependencies = [
- "actix-rt 2.5.1",
  "async-native-tls",
  "async-std",
  "native-tls",
- "once_cell",
- "tokio 1.15.0",
- "tokio-native-tls",
 ]
 
 [[package]]
@@ -3302,33 +3297,11 @@ dependencies = [
  "libc",
  "memchr",
  "mio 0.7.14",
- "num_cpus",
  "once_cell",
  "parking_lot",
  "pin-project-lite 0.2.8",
  "signal-hook-registry",
  "winapi 0.3.9",
-]
-
-[[package]]
-name = "tokio-native-tls"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f7d995660bd2b7f8c1568414c1126076c13fbb725c40112dc0120b78eb9b717b"
-dependencies = [
- "native-tls",
- "tokio 1.15.0",
-]
-
-[[package]]
-name = "tokio-stream"
-version = "0.1.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "50145484efff8818b5ccd256697f36863f587da82cf8b409c53adf1e840798e3"
-dependencies = [
- "futures-core",
- "pin-project-lite 0.2.8",
- "tokio 1.15.0",
 ]
 
 [[package]]
