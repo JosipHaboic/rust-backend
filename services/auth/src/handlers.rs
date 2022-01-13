@@ -1,12 +1,13 @@
-use actix_web::Responder;
+#![allow(dead_code)]
+use crate::db;
 
 
-pub async fn login() -> impl Responder {
+pub async fn login() {
 	unimplemented!()
 }
-pub async fn logout() -> impl Responder {
+pub async fn logout() {
 	unimplemented!()
 }
-pub async fn register() -> impl Responder {
+pub async fn register() {
 	unimplemented!()
 }

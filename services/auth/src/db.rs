@@ -1,19 +1,8 @@
-use sqlx::sqlite::SqlitePool;
-
-use crate::{errors, user};
+use sqlx::{sqlite::Sqlite, Pool};
 
 
-pub(crate) async fn initialize_database(pool: &SqlitePool) {
-	// let mut connection = pool.acquire.await?;
-	unimplemented!()
-}
-
-pub(crate) async fn add_user() -> Result<(), ()> {
-	unimplemented!()
-}
-pub(crate) async fn find_user() -> Result<(), ()> {
-	unimplemented!()
-}
-pub(crate) async fn remove_user() -> Result<(), ()> {
-	unimplemented!()
+pub(crate) fn create_pool(
+	uri: &'static str,
+) -> impl std::future::Future<Output = Result<Pool<Sqlite>, sqlx::Error>> {
+	Pool::<Sqlite>::connect(uri)
 }
