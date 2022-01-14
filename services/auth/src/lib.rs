@@ -7,14 +7,14 @@ pub fn init() -> Vec<u8> {
 
 	let output = if cfg!(target_os = "windows") {
 		Command::new("cmd")
-			.args(["", "start init.bat"])
+			.args(["", "start initDB.bat"])
 			.output()
 			.expect("failed to execute process")
 	}
 	else {
 		Command::new("sh")
 			.arg("-c")
-			.arg("start setup.sh")
+			.arg("start setupDB.sh")
 			.output()
 			.expect("failed to execute process")
 	};
