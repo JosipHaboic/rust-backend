@@ -2,4 +2,5 @@
 log/logs
 target/
 tests/db
+sqlite/lib/db.log
 .bat
