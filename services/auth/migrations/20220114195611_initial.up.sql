@@ -120,6 +120,7 @@ END;
 --
 -- TEST DATA
 --
+
 -- INSERT INTO user (id, username, password, email)
 -- VALUES ('1', 'John', '12345678', 'john@gmail.com');
 -- --

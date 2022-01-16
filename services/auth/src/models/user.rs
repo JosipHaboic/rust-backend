@@ -32,7 +32,7 @@ impl ActiveRecord for User {
 
 	async fn save(&self, pool: &SqlitePool) -> Result<(), sqlx::Error> {
 		match sqlx::query(
-			"INSERT INTO users (id, username, password, email) VALUES (?1, ?2, ?3, ?4)",
+			"INSERT INTO user (id, username, password, email) VALUES (?1, ?2, ?3, ?4)",
 		)
 		.bind(&self.id)
 		.bind(&self.username)
