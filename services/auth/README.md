@@ -7,7 +7,7 @@
 #### Windows
 
 ```cmd
-SET DATABASE_URL=sqlite://./sqlite/db/main.db
+SET DATABASE_URL=sqlite://./sqlite/db/main.sqlite
 sqlx db create
 sqlx migrate run
 ```
@@ -16,7 +16,7 @@ sqlx migrate run
 
 ```bash
 # initDB.sh
-export DATABASE_URL=sqlite://./sqlite/db/main.db
+export DATABASE_URL=sqlite://./sqlite/db/main.sqlite
 sqlx db create
 sqlx migrate run
 ```
