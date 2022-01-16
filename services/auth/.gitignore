@@ -2,7 +2,7 @@
 log/logs
 target/
 tests/db
-sqlite/lib/db.log
+sqlite/db
 .bat
 .log
 .sqlite
