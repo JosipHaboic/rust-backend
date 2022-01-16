@@ -1,13 +1,15 @@
-#![allow(dead_code)]
-use crate::db;
+#![allow(dead_code, unused_imports, unused_variables)]
+use sqlx::sqlite::SqliteConnection;
+
+use crate::{db, models};
 
 
-pub async fn login() {
+async fn login() {
 	unimplemented!()
 }
-pub async fn logout() {
+async fn logout() {
 	unimplemented!()
 }
-pub async fn register() {
+async fn register(db: &SqliteConnection) {
 	unimplemented!()
 }

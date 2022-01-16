@@ -1,8 +1,9 @@
-use sqlx::{sqlite::Sqlite, Pool};
+#![allow(dead_code)]
+use std::env;
 
+use sqlx::sqlite::SqlitePool;
 
-pub(crate) fn create_pool(
-	uri: &'static str,
-) -> impl std::future::Future<Output = Result<Pool<Sqlite>, sqlx::Error>> {
-	Pool::<Sqlite>::connect(uri)
+pub async fn create_pool() -> Result<SqlitePool, sqlx::Error> {
+	log::info!(target: "auth-service", "DB: Created sqlite pool");
+	SqlitePool::connect(&env::var("DATABASE_URL").unwrap()).await
 }

@@ -1,4 +1,3 @@
---
 -- TABLES
 --
 CREATE TABLE IF NOT EXISTS user (
@@ -10,7 +9,6 @@ CREATE TABLE IF NOT EXISTS user (
 	CHECK(length(password) > 0)
 );
 --
---
 CREATE TABLE IF NOT EXISTS user_update_history (
 	id INTEGER PRIMARY KEY,
 	usr_id TEXT NOT NULL,
@@ -19,12 +17,10 @@ CREATE TABLE IF NOT EXISTS user_update_history (
 	email TEXT NULL,
 	updated_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
 );
---
 -- INDEXES
 --
 CREATE UNIQUE INDEX IF NOT EXISTS idx_user_id ON user(id);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_usrer_update_id ON user_update_history(id);
---
 -- TRIGGERS
 --
 CREATE TRIGGER IF NOT EXISTS on_user_email_before_insert BEFORE
@@ -33,7 +29,6 @@ SELECT CASE
 		WHEN NEW.email NOT LIKE '%_@_%.__%' THEN RAISE (ABORT, 'Invalid email address')
 	END;
 END;
---
 --
 CREATE TRIGGER IF NOT EXISTS on_user_after_update
 AFTER
@@ -62,7 +57,6 @@ CREATE TABLE IF NOT EXISTS authentication (
 	ON DELETE CASCADE
 );
 --
---
 CREATE TABLE IF NOT EXISTS authentication_update_history (
 	id INTEGER PRIMARY KEY,
 	usr_id TEXT NOT NULL,
@@ -72,7 +66,10 @@ CREATE TABLE IF NOT EXISTS authentication_update_history (
 	ON UPDATE CASCADE
 	ON DELETE CASCADE
 );
+-- INDEXES
 --
+CREATE UNIQUE INDEX IF NOT EXISTS idx_auth_usr_id ON auth(usr_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_auth_update_id ON authentication_update_history(usr_id);
 -- TRIGGERS
 --
 CREATE TRIGGER IF NOT EXISTS on_authentication_update
@@ -86,48 +83,15 @@ SET
 WHERE usr_id = new.usr_id;
 END;
 --
--- TABLES
---
-CREATE TABLE IF NOT EXISTS authorization (
-	id INTEGER PRIMARY KEY,
-	usr_id TEXT NOT NULL UNIQUE,
-	type TEXT NOT NULL DEFAULT "NONE",
-	created_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
-	FOREIGN KEY(usr_id) REFERENCES user(id)
-	ON UPDATE CASCADE
-	ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS authorization_update_history (
-	id INTEGER PRIMARY KEY,
-	usr_id TEXT NOT NULL,
-	type TEXT NOT NULL,
-	updated_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
-);
---
--- TRIGGERS
---
-CREATE TRIGGER IF NOT EXISTS on_authorization_update
-AFTER
-UPDATE ON authorization
-	WHEN old.type <> new.type
-	OR old.usr_id <> new.usr_id BEGIN
-INSERT INTO authorization_update_history (usr_id, type)
-VALUES (new.usr_id, new.type);
-END;
---
 -- VIEWS
 --
 CREATE VIEW v_user AS
 SELECT user.id,
 	user.username,
 	user.created_at,
-	authorization.type as authorization,
 	authentication.passed as authenticated
 FROM user
 	INNER JOIN authorization ON authorization.usr_id = user.id
-	INNER JOIN authentication ON authentication.usr_id = user.id;
---
 --
 CREATE VIEW v_authenticated_users AS
 SELECT 
@@ -136,7 +100,6 @@ SELECT
 	user.created_at
 	FROM user
 	INNER JOIN authentication ON authentication.usr_id = user.id;
---
 --
 CREATE VIEW v_auth_history AS
 SELECT 
@@ -188,30 +151,6 @@ VALUES ('3', 'TRUE');
 INSERT INTO authentication (usr_id, passed)
 VALUES ('4', 'FALSE');
 --
-INSERT INTO authorization (usr_id, type)
-VALUES ('1', 'Visitor');
---
-INSERT INTO authorization (usr_id, type)
-VALUES ('2', 'Visitor');
---
-INSERT INTO authorization (usr_id, type)
-VALUES ('3', 'Admin');
---
-INSERT INTO authorization (usr_id, type)
-VALUES ('4', 'Visitor');
---
-
 UPDATE authentication
 SET passed = 'TRUE'
 WHERE usr_id = '3';
-
---
---
-
-UPDATE authorization
-SET type = 'Registered'
-WHERE usr_id = '3';
-
---
---
-

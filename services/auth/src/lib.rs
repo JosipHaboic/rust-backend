@@ -1,26 +1,10 @@
 use actix_web::{guard, web, HttpResponse};
-mod db;
-mod handlers;
+pub mod db;
+pub mod handlers;
+pub mod models;
+pub mod traits;
+pub mod util;
 
-pub fn init() -> Vec<u8> {
-	use std::process::Command;
-
-	let output = if cfg!(target_os = "windows") {
-		Command::new("cmd")
-			.args(["", "start initDB.bat"])
-			.output()
-			.expect("failed to execute process")
-	}
-	else {
-		Command::new("sh")
-			.arg("-c")
-			.arg("start setupDB.sh")
-			.output()
-			.expect("failed to execute process")
-	};
-
-	output.stdout
-}
 
 pub fn config(cfg: &mut web::ServiceConfig) {
 	cfg.service(
@@ -58,3 +42,24 @@ pub fn config(cfg: &mut web::ServiceConfig) {
 			),
 	);
 }
+
+
+// pub fn init() -> Vec<u8> {
+// 	use std::process::Command;
+
+// 	let output = if cfg!(target_os = "windows") {
+// 		Command::new("cmd")
+// 			.args(["", "start initDB.bat"])
+// 			.output()
+// 			.expect("failed to execute process")
+// 	}
+// 	else {
+// 		Command::new("sh")
+// 			.arg("-c")
+// 			.arg("$ initDB.sh")
+// 			.output()
+// 			.expect("failed to execute process")
+// 	};
+
+// 	output.stdout
+// }

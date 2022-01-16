@@ -8,20 +8,20 @@ appenders:
     encoder:
       pattern: "{d} - {m}{n}"
 
-  # jsonrpc:
-  #   kind: file
-  #   path: "log/logs/jsonrpc.log"
-  #   encoder:
-  #     pattern: "{d} - {m}{n}"
+  auth_service:
+    kind: file
+    path: "log/logs/auth_service.log"
+    encoder:
+      pattern: "{d} - {m}{n}"
 
 root:
   level: info
   appenders:
     - stdout
 
-# loggers:
-#   jsonrpc:
-#     level: trace
-#     appenders:
-#       - jsonrpc
-#     additive: false
+loggers:
+  auth_service:
+    level: trace
+    appenders:
+      - auth_service
+    additive: false
