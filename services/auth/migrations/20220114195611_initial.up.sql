@@ -1,3 +1,11 @@
+-- .log db.log
+-- .headers ON
+-- .mode column
+-- .read user.sql
+-- .read authentication.sql
+-- .read sqliteauthorization.sql
+-- .read views.sql
+-- .read test.sql
 -- TABLES
 --
 CREATE TABLE IF NOT EXISTS user (
@@ -68,7 +76,7 @@ CREATE TABLE IF NOT EXISTS authentication_update_history (
 );
 -- INDEXES
 --
-CREATE UNIQUE INDEX IF NOT EXISTS idx_auth_usr_id ON auth(usr_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_auth_usr_id ON authentication(usr_id);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_auth_update_id ON authentication_update_history(usr_id);
 -- TRIGGERS
 --
@@ -85,72 +93,72 @@ END;
 --
 -- VIEWS
 --
-CREATE VIEW v_user AS
-SELECT user.id,
-	user.username,
-	user.created_at,
-	authentication.passed as authenticated
-FROM user
-	INNER JOIN authorization ON authorization.usr_id = user.id
---
-CREATE VIEW v_authenticated_users AS
-SELECT 
-	user.id,
-	user.username,
-	user.created_at
-	FROM user
-	INNER JOIN authentication ON authentication.usr_id = user.id;
---
-CREATE VIEW v_auth_history AS
-SELECT 
-	authentication_update_history.usr_id,
-	user.username AS username,
-	authentication_update_history.passed,
-	authentication_update_history.updated_at
-FROM authentication_update_history
-	JOIN user ON user.id = authentication_update_history.usr_id;
+-- CREATE VIEW v_user AS
+-- SELECT user.id,
+-- 	user.username,
+-- 	user.created_at,
+-- 	authentication.passed as authenticated
+-- FROM user
+-- 	INNER JOIN authorization ON authorization.usr_id = user.id
+-- --
+-- CREATE VIEW v_authenticated_users AS
+-- SELECT 
+-- 	user.id,
+-- 	user.username,
+-- 	user.created_at
+-- 	FROM user
+-- 	INNER JOIN authentication ON authentication.usr_id = user.id;
+-- --
+-- CREATE VIEW v_auth_history AS
+-- SELECT 
+-- 	authentication_update_history.usr_id,
+-- 	user.username AS username,
+-- 	authentication_update_history.passed,
+-- 	authentication_update_history.updated_at
+-- FROM authentication_update_history
+-- 	JOIN user ON user.id = authentication_update_history.usr_id;
 --
 -- TEST DATA
 --
-INSERT INTO user (id, username, password, email)
-VALUES ('1', 'John', '12345678', 'john@gmail.com');
---
-INSERT INTO user (id, username, password, email)
-VALUES (
-		'2',
-		'Jane',
-		'ds9ds9dss89d8s',
-		'jane@gmail.com'
-	);
---
-INSERT INTO user (id, username, password, email)
-VALUES (
-		'3',
-		'Ana',
-		'erze8e8re87re8',
-		'ana@smail.com'
-	);
---
-INSERT INTO user (id, username, password, email)
-VALUES (
-		'4',
-		'Mike',
-		'lckls8d9s8_9ds8_98',
-		'mike@gmail.com'
-	);
---
-INSERT INTO authentication (usr_id, passed)
-VALUES ('1', 'FALSE');
---
-INSERT INTO authentication (usr_id, passed)
-VALUES ('2', 'FALSE');
---
-INSERT INTO authentication (usr_id, passed)
-VALUES ('3', 'TRUE');
---
-INSERT INTO authentication (usr_id, passed)
-VALUES ('4', 'FALSE');
---
-UPDATE authentication
-SET passed = 'TRUE'
-WHERE usr_id = '3';
+-- INSERT INTO user (id, username, password, email)
+-- VALUES ('1', 'John', '12345678', 'john@gmail.com');
+-- --
+-- INSERT INTO user (id, username, password, email)
+-- VALUES (
+-- 		'2',
+-- 		'Jane',
+-- 		'ds9ds9dss89d8s',
+-- 		'jane@gmail.com'
+-- 	);
+-- --
+-- INSERT INTO user (id, username, password, email)
+-- VALUES (
+-- 		'3',
+-- 		'Ana',
+-- 		'erze8e8re87re8',
+-- 		'ana@smail.com'
+-- 	);
+-- --
+-- INSERT INTO user (id, username, password, email)
+-- VALUES (
+-- 		'4',
+-- 		'Mike',
+-- 		'lckls8d9s8_9ds8_98',
+-- 		'mike@gmail.com'
+-- 	);
+-- --
+-- INSERT INTO authentication (usr_id, passed)
+-- VALUES ('1', 'FALSE');
+-- --
+-- INSERT INTO authentication (usr_id, passed)
+-- VALUES ('2', 'FALSE');
+-- --
+-- INSERT INTO authentication (usr_id, passed)
+-- VALUES ('3', 'TRUE');
+-- --
+-- INSERT INTO authentication (usr_id, passed)
+-- VALUES ('4', 'FALSE');
+-- --
+-- UPDATE authentication
+-- SET passed = 'TRUE'
+-- WHERE usr_id = '3';

@@ -1,14 +1,13 @@
 #[cfg(test)]
 mod tests {
-	use std::env;
+	use std::{env, process::Command};
 
 	use auth_service::{db, models, traits::ActiveRecord};
-	use sqlx::{migrate::MigrateDatabase, Error, Pool, Sqlite};
+	use sqlx::{Pool, Sqlite};
 
 
-	// helper fn
-	fn create_test_user() -> models::User {
-		models::User {
+	fn create_test_user() -> models::user::User {
+		models::user::User {
 			id:         "0".to_owned(),
 			username:   "John".to_owned(),
 			password:   "12345678".to_owned(),
@@ -16,12 +15,45 @@ mod tests {
 			created_at: None,
 		}
 	}
-	async fn create_test_pool() -> Result<Pool<Sqlite>, Error> {
-		// SET DATABASE_URL=sqlite://./sqlite/db/main.db
-		// sqlx db create
-		// sqlx migrate run
-		db::create_pool().await
+
+	fn setup_test_db() {
+		// env::set_var("DATABASE_URL", "sqlite://./tests/db/test.sqlite");
+
+		let _output = if cfg!(target_os = "windows") {
+			Command::new("cmd")
+				.args([
+					"SET DATABASE_URL=sqlite://./tests/db/test.sqlite",
+					"sqlx db create",
+					"sqlx migrate run",
+				])
+				.output()
+				.expect("failed to execute process\n\n\n")
+		}
+		else {
+			Command::new("sh")
+				.arg("EXPORT DATABASE_URL=sqlite://./tests/db/test.sqlite")
+				.arg("sqlx db create")
+				.arg("sqlx migrate run")
+				.output()
+				.expect("failed to execute process\n\n\n")
+		};
 	}
+
+	async fn create_test_pool() -> Result<Pool<Sqlite>, sqlx::Error> {
+		setup_test_db();
+
+		match db::create_pool().await {
+			Ok(pool) => {
+				run_test_migrations(&pool)
+					.await
+					.unwrap();
+
+				Ok(pool)
+			},
+			Err(error) => Err(error),
+		}
+	}
+
 	async fn run_test_migrations(pool: &Pool<Sqlite>) -> Result<(), sqlx::migrate::MigrateError> {
 		sqlx::migrate!("./migrations")
 			.run(pool)
@@ -29,25 +61,10 @@ mod tests {
 	}
 
 	#[actix_rt::test]
-	pub async fn a_initialize() {
-		env::set_var("DATABASE_URI", "sqlite://./tests/db/test.db");
-		let pool = create_test_pool()
-			.await
-			.unwrap();
-		sqlx::sqlite::Sqlite::create_database(&env::var("DATABASE_URI").unwrap())
-			.await
-			.unwrap();
-		run_test_migrations(&pool)
-			.await
-			.unwrap();
-
-		println!("Done setup for tests.");
-		assert!(true);
-	}
-
-	#[actix_rt::test]
 	async fn test_create_pool() {
+		setup_test_db();
 		let pool = create_test_pool().await;
+
 		assert!(pool.is_ok());
 	}
 
@@ -62,6 +79,7 @@ mod tests {
 
 	#[actix_rt::test]
 	async fn test_user_model_save() {
+		setup_test_db();
 		let usr = create_test_user();
 		let pool = create_test_pool()
 			.await
@@ -72,15 +90,15 @@ mod tests {
 				.unwrap(),
 			()
 		);
-		env::remove_var("DATABASE_URI");
 	}
 
 	#[actix_rt::test]
 	async fn test_user_model_load() {
+		setup_test_db();
 		let pool = create_test_pool()
 			.await
 			.unwrap();
-		let usr = models::User::load(&pool, "0")
+		let usr = models::user::User::load(&pool, "0")
 			.await
 			.unwrap();
 

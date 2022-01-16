@@ -1,0 +1,31 @@
+(2067) abort at 44 in [INSERT INTO user (id, username, password, email)
+VALUES ('1', 'John', '12345678', 'john@gmail.com');]: column id is not unique
+(2067) abort at 44 in [INSERT INTO user (id, username, password, email)
+VALUES (
+		'2',
+		'Jane',
+		'ds9ds9dss89d8s',
+		'jane@gmail.com'
+	);]: column id is not unique
+(2067) abort at 44 in [INSERT INTO user (id, username, password, email)
+VALUES (
+		'3',
+		'Ana',
+		'erze8e8re87re8',
+		'ana@smail.com'
+	);]: column id is not unique
+(2067) abort at 44 in [INSERT INTO user (id, username, password, email)
+VALUES (
+		'4',
+		'Mike',
+		'lckls8d9s8_9ds8_98',
+		'mike@gmail.com'
+	);]: column id is not unique
+(2067) abort at 16 in [INSERT INTO authentication (usr_id, passed)
+VALUES ('1', 'FALSE');]: column usr_id is not unique
+(2067) abort at 16 in [INSERT INTO authentication (usr_id, passed)
+VALUES ('2', 'FALSE');]: column usr_id is not unique
+(2067) abort at 16 in [INSERT INTO authentication (usr_id, passed)
+VALUES ('3', 'TRUE');]: column usr_id is not unique
+(2067) abort at 16 in [INSERT INTO authentication (usr_id, passed)
+VALUES ('4', 'FALSE');]: column usr_id is not unique
