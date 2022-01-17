@@ -7,7 +7,8 @@ use crate::traits::ActiveRecord;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct User {
-	pub id:         String,
+	pub id:         Option<i64>,
+	pub uuid:       String,
 	pub username:   String,
 	pub password:   String,
 	pub email:      String,
@@ -16,7 +17,8 @@ pub struct User {
 impl User {
 	pub fn new(username: &str, password: &str, email: &str) -> User {
 		User {
-			id:         uuid32(),
+			id:         None,
+			uuid:       uuid32(),
 			username:   username.to_owned(),
 			password:   password.to_owned(),
 			email:      email.to_owned(),
@@ -32,9 +34,9 @@ impl ActiveRecord for User {
 
 	async fn save(&self, pool: &SqlitePool) -> Result<(), sqlx::Error> {
 		match sqlx::query(
-			"INSERT INTO user (id, username, password, email) VALUES (?1, ?2, ?3, ?4)",
+			"INSERT INTO user (uuid, username, password, email) VALUES (?1, ?2, ?3, ?4)",
 		)
-		.bind(&self.id)
+		.bind(&self.uuid)
 		.bind(&self.username)
 		.bind(&self.password)
 		.bind(&self.email)
@@ -47,13 +49,14 @@ impl ActiveRecord for User {
 	}
 
 	async fn load(pool: &SqlitePool, id: &str) -> Result<User, sqlx::Error> {
-		match sqlx::query("SELECT * FROM user WHERE id = ?1")
+		match sqlx::query("SELECT * FROM user WHERE uuid = ?1")
 			.bind(id)
 			.fetch_one(pool)
 			.await
 		{
 			Ok(row) => Ok(User {
 				id:         row.get("id"),
+				uuid:       row.get("uuid"),
 				username:   row.get("username"),
 				password:   row.get("password"),
 				email:      row.get("email"),
