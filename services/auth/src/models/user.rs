@@ -2,7 +2,8 @@ use rs_uuid::uuid32;
 use serde::{Deserialize, Serialize};
 use sqlx::{sqlite::SqlitePool, Row};
 
-use crate::traits::ActiveRecord;
+use crate::traits::{ActiveRecord, IdentityField};
+
 
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -14,6 +15,7 @@ pub struct User {
 	pub email:      String,
 	pub created_at: Option<String>,
 }
+
 impl User {
 	pub fn new(username: &str, password: &str, email: &str) -> User {
 		User {
@@ -27,12 +29,20 @@ impl User {
 	}
 }
 
+impl IdentityField for User {
+	type IdType = String;
+
+	fn identity(self: Self) -> Self::IdType {
+		self.uuid
+	}
+}
+
 #[async_trait::async_trait]
 impl ActiveRecord for User {
 	type Error = sqlx::Error;
 	type Pool = SqlitePool;
 
-	async fn save(&self, pool: &SqlitePool) -> Result<(), sqlx::Error> {
+	async fn save(&self, pool: &Self::Pool) -> Result<(), Self::Error> {
 		match sqlx::query(
 			"INSERT INTO user (uuid, username, password, email) VALUES (?1, ?2, ?3, ?4)",
 		)
@@ -48,7 +58,7 @@ impl ActiveRecord for User {
 		}
 	}
 
-	async fn load(pool: &SqlitePool, id: &str) -> Result<User, sqlx::Error> {
+	async fn load(pool: &Self::Pool, id: &str) -> Result<User, Self::Error> {
 		match sqlx::query("SELECT * FROM user WHERE uuid = ?1")
 			.bind(id)
 			.fetch_one(pool)

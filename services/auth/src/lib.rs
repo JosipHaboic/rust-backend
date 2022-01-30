@@ -1,9 +1,12 @@
 use actix_web::{guard, web, HttpResponse};
+
 pub mod db;
 pub mod handlers;
+pub mod jwt;
 pub mod models;
 pub mod traits;
 pub mod util;
+
 
 
 pub fn config(cfg: &mut web::ServiceConfig) {

@@ -1,0 +1,6 @@
+// {type:activity}
+// {generate:true}
+(start)-><a>[User registered]->(login)->|c|
+<a>[user unregistered]->(register)->|c|
+|c|->(issue token)
+(issue token)->(end)

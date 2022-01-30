@@ -5,6 +5,12 @@ pub mod time {
 			.format("%Y-%m-%d--%A %H:%M:%S")
 			.to_string()
 	}
+
+	pub fn expire_in(minutes: i64) -> String {
+		(chrono::Local::now() + chrono::Duration::minutes(minutes))
+			.format("%Y-%m-%d--%A %H:%M:%S")
+			.to_string()
+	}
 }
 
 pub mod secret {
