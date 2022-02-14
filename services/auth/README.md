@@ -1,5 +1,7 @@
 # Service Docs
 
+## Auth service for access control
+
 ## Database
 
 ### Initialize database
