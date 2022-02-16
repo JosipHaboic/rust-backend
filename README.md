@@ -1,4 +1,4 @@
-# Backend template in Rust
+# Backend example in Rust
 
 ## Pre-steps
 
